@@ -1,35 +1,44 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter, Routes, Route, Link } from "react-router";
 import './App.css'
+import { CertificateProvider, useCertificate } from "./components/CertificateContext";
+import Home from "./pages/home.jsx";
+import NotFound from "./pages/not_found.jsx";
+import Universitiespage from "./pages/universities_page.jsx";
+import universities from './data/universities.jsx';
+import UniversityDetailsPage from "./pages/UniversityDetailsPage.jsx";
+import CourseDetailsPage from "./pages/CourseDetailsPage.jsx";
+import Header from "./components/Header.jsx";
+import ClosestUniversitiesPage from "./pages/AdvancedSearch.jsx"
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function App() {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <BrowserRouter>
+    <CertificateProvider>
+      <Header />
 
-export default App
+      <div className='bg-gradient-to-b from-slate-300 to-slate-100'>
+        <Routes>
+          <Route path="/Gam3etak" element={<Home universities={universities} />} />
+          <Route path="/Gam3etak/location" element={
+            <ClosestUniversitiesPage universities={universities} />}
+          />
+          <Route path="/Gam3etak/uni" element={
+            <Universitiespage universities={universities} />}
+          />
+          <Route
+            path="/Gam3etak/uni/:universityName"
+            element={<UniversityDetailsPage universities={universities} />}
+          />
+          <Route
+            path="/Gam3etak/uni/:universityName/course/:courseName"
+            element={<CourseDetailsPage universities={universities} />}
+          />
+          <Route path="*" element={<NotFound />} />
+          <Route path="/Gam3etak/*" element={<NotFound />} />
+        </Routes>
+      </div>
+    </CertificateProvider>
+    </BrowserRouter>
+  );
+}
